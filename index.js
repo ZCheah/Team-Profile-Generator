@@ -13,3 +13,44 @@ const render = require("./src/page-template.js");
 
 // TODO: Write Code to gather information about the development team members, and render the HTML file.
 
+// Creating an array for team members
+const teamMembers = [];
+
+// Function prompt for the manager details
+function promptManager() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Enter the team manager's name:",
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Enter the team manager's employee ID:",
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Enter the team manager's email address:",
+      },
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "Enter the team manager's office number:",
+      },
+    ])
+    .then((answers) => {
+      // Creating a manager object
+      const manager = new Manager(
+        answers.name,
+        answers.id,
+        answers.email,
+        answers.officeNumber
+      );
+      teamMembers.push(manager);
+      // Next step of the prompt
+      promptMenu();
+    });
+}
