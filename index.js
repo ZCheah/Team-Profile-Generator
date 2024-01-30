@@ -54,6 +54,8 @@ function promptManager() {
       promptMenu();
     });
 }
+
+
 // Function prompt for the engineer details
 function promptEngineer() {
     inquirer
@@ -92,6 +94,8 @@ function promptEngineer() {
         promptMenu();
       });
   }
+
+
   // Function prompt for the intern details
 function promptIntern() {
     inquirer
@@ -130,3 +134,50 @@ function promptIntern() {
         promptMenu();
       });
   }
+
+
+// Function prompt user to menu options
+function promptMenu() {
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "menu",
+          message: "What would you like to do?",
+          choices: ["Add an engineer", "Add an intern", "Finish building the team"],
+        },
+      ])
+      .then((answers) => {
+        // User choice dependant on their selection 
+        switch (answers.menu) {
+          case "Add an engineer":
+            promptEngineer();
+            break;
+          case "Add an intern":
+            promptIntern();
+            break;
+          case "Finish building the team":
+            // Generate HTML and end process
+            generateHTML();
+            break;
+        }
+      });
+  }
+
+
+  // Function to generate HTML as a file using render function
+function generateHTML() {
+    const html = render(teamMembers);
+    // Check if the output directory exists, create it if not
+    if (!fs.existsSync(OUTPUT_DIR)) {
+      fs.mkdirSync(OUTPUT_DIR);
+    }
+    
+    // Write the HTML to the specified output file
+    fs.writeFileSync(outputPath, html);
+    console.log(`Team HTML generated at ${outputPath}`);
+  }
+
+  
+  // Start the process by prompting for manager details
+  promptManager();
